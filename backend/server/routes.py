@@ -46,10 +46,8 @@ def get_user_activity(user_id):
 
 
 @api.route("/posts", methods=['GET'])
-@token_auth.login_required
 def get_featured_posts():
-    limit = request.args.get("limit") or 5
-    return jsonify(db.get_featured_posts(limit))
+    return jsonify(db.get_featured_posts(10))
 
 
 @api.route("/posts", methods=['POST'])

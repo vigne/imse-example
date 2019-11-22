@@ -3,6 +3,7 @@ Flask
 # mysql-connector
 flask_pymongo
 flask-httpauth
+flask-cors
 
 requests
 Faker
