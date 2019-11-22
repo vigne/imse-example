@@ -26,6 +26,8 @@ def reset_database():
     mongo.db.posts.drop()
     mongo.db.create_collection("posts")
     mongo.db.tokens.create_index([("author", -1)])
+    # index overlaps 100% with the data needed by the query in get_posts_by_category
+    mongo.db.tokens.create_index([("category", -1)])
 
 
 
@@ -133,3 +135,9 @@ def get_posts_by_category(category_id, page=None, items_per_page=None):
     if items_per_page is not None:
         posts.limit(int(items_per_page))
     return json.loads(json_util.dumps(posts))
+
+def count_posts_by_category(category_id=None):
+    # bucket counting
+    return json.loads(json_util.dumps(mongo.db.posts.aggregate([{
+            "$group": { "_id": "$category", "count": {"$sum" : 1}}
+        }])))

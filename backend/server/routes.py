@@ -86,6 +86,13 @@ def add_comment(post_id):
         abort(make_response(({"error": "Failed inserting comment", "exception": str(e)}, 500)))
     return ("Comment created", 201)
 
+
+# get posts by category
+@api.route("/category")
+@token_auth.login_required
+def count_posts_by_category():
+    return jsonify(db.count_posts_by_category())
+
 # get posts by category
 @api.route("/category/<string:category_id>")
 @token_auth.login_required
