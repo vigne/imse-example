@@ -1,0 +1,9 @@
+Flask
+
+# mysql-connector
+flask_pymongo
+flask-httpauth
+
+requests
+Faker
+PyJWT
