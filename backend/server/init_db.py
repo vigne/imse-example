@@ -47,7 +47,9 @@ def init():
         "follows": [fake.category() for __ in range(random.randint(0,2))]
         } for _ in range(number_of_user)]
     # add one account with known mail and pwd for demo
-    users.append({
+    for user in users:
+        requests.post("http://localhost:5000/users", json=user)
+    requests.post("http://localhost:5000/users", json={
         "_id": "ralph",
         "name": "Ralph Vigne",
         "address": fake.address(),
@@ -56,8 +58,6 @@ def init():
         "follows": ["science", "sports"]
         })
 
-    for user in users:
-        requests.post("http://localhost:5000/users", json=user)
 
     # request access token
     headers = {
