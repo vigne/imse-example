@@ -62,7 +62,7 @@ def create_post():
     except Exception as e:
         traceback.print_exc()
         abort(make_response(({"error": "Failed inserting post", "exception": str(e)}, 500)))
-    return ("Post created: posts/%s" % post, 201)
+    return jsonify({"_id": post}), 201
 
 
 @api.route("/posts/<string:post_id>", methods=['GET'])

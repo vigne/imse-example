@@ -92,7 +92,7 @@ def store_post(post):
     # application level consistency (no not null)
     if (not 'category' in post) or (post['category'] == ''):
         raise Exception("Missing 'category' attribute")
-    return mongo.db.posts.insert(post)
+    return json.loads(json_util.dumps(mongo.db.posts.insert(post)))
 
 def get_post(post_id):
     return json.loads(json_util.dumps(mongo.db.posts.find_one_or_404({"_id": ObjectId(post_id)})))
