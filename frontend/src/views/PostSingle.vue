@@ -3,12 +3,12 @@
     <section class="hero is-primary">
       <div class="hero-body">
         <div class="container post">
-          <span class="meta"><b>{{post.author_name}}</b> posted at <b>{{post.creation_date.$date | formatDate}}</b></span>
+          <span class="meta"><b>{{post.author_name}}</b> posted at <b>{{post.creation_date | formatDate}}</b></span>
           <br/><br/>
           <h1 class="title">
             {{ post.uri }}
           </h1>
-          <span class="comments_count"><b>{{post.comments.length}}</b> user commented on this post</span>
+          <span class="comments_count"><b>{{getCount()}}</b> user commented on this post</span>
         </div>
       </div>
     </section>
@@ -21,11 +21,11 @@
     </section>
     <section class="post-comments">
       <div class="container comment">
-          <div v-for="(comment, idx) in post.comments" :key="idx" class="column">
+          <div v-for="(comment, idx) in getComments()" :key="idx" class="column">
             <table>
               <tr>
                 <td class="meta">
-                  <b>{{comment.author_name}}</b> said at <b>{{comment.creation_date.$date | formatDate}}</b>
+                  <b>{{comment.author_name}}</b> said at <b>{{comment.creation_date | formatDate}}</b>
                 </td>
               </tr>
               <tr>
@@ -58,6 +58,16 @@
           .then((data) => this.post = data)
           .catch((err) => {console.log("SingleView", err)})
       },
+      getCount() {
+        if(this.post.comments == undefined)
+          return 0
+        return this.post.comments.length
+      },
+      getComments() {
+        if(this.post.comments == undefined)
+          return []
+        return this.post.comments
+      },
       postComment() {
         console.log(this.comment)
         apiService.add_comment(this.$route.params.id, this.comment)
@@ -73,7 +83,7 @@
       }
     },
     created() {
-      this.post = this.getPostById();
+      this.getPostById();
     }
   }
 </script>

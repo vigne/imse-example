@@ -33,7 +33,7 @@ export class APIService{
   getPostByCategory(categoryId) {
     console.log("get post by category")
     const url = `/category/${categoryId}`;
-    return axios.get(url)
+    return axios.get(url, options)
       .then(response => response.data)
       .catch((error) => {
         console.log("Error requesting post from backend", error)
@@ -43,10 +43,21 @@ export class APIService{
   }
 
   getPostById(postId) {
-    console.log("get post by id")
+    console.log("get post by id", postId)
     const url = `/posts/${postId}`;
-    return axios.get(url)
+    return axios.get(url, options)
       .then(response => response.data)
+      .catch((error) => {
+        if (error.response && error.response.status === 401)
+        console.log("Error requesting post from backend", error)
+          window.location.href = "/login"
+      })
+  }
+  postLink(category, link) {
+    console.log("add comment")
+    const url = `/posts`;
+    return axios.post(url, { "uri": link, "category": category }, options)
+      .then(() => {window.location.href = "/categories/" + category})
       .catch((error) => {
         console.log("Error requesting post from backend", error)
         if (error.response && error.response.status === 401)
@@ -56,7 +67,7 @@ export class APIService{
   add_comment(postId, comment) {
     console.log("add comment")
     const url = `/posts/${postId}`;
-    return axios.post(url, { "text": comment})
+    return axios.post(url, { "text": comment}, options)
       .then(response => response.data)
       .catch((error) => {
         console.log("Error requesting post from backend", error)
@@ -67,7 +78,7 @@ export class APIService{
   getUserProfile(userId) {
     console.log("get post by id")
     const url = `/users/${userId}`;
-    return axios.get(url)
+    return axios.get(url, options)
       .then(response => response.data)
       .catch((error) => {
         console.log("Error requesting post from backend", error)
@@ -78,7 +89,7 @@ export class APIService{
   getUserPostsByUser(userId) {
     console.log("get post by user")
     const url = `/users/${userId}/posts`;
-    return axios.get(url)
+    return axios.get(url, options)
       .then(response => response.data)
       .catch((error) => {
         console.log("Error requesting post from backend", error)

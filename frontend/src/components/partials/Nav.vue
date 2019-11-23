@@ -1,8 +1,13 @@
 <template>
 <nav class="navbar container" role="navigation" aria-label="main navigation">
   <div id="navbar" class="navbar-menu">
-    <div class="navbar-start">
-      <div v-if="getUser()">
+    <div v-if="getUser()">
+      <div class="navbar-start">
+        <a class="button new">
+          <router-link :to="'/post'" >
+            New Post
+          </router-link>
+        </a>
         <a class="button is-dark">
           <router-link :to="'/'">
             <strong>Home</strong>
@@ -19,7 +24,9 @@
           </router-link>
         </a>
       </div>
-      <div v-else>
+    </div>
+    <div v-else>
+      <div class="navbar-start">
         <a class="button is-dark">
           <router-link :to="'/login'">
             <strong>Sign In</strong>
@@ -70,5 +77,8 @@ nav {
 }
 .button {
   margin-right: 20px;
+}
+.new {
+  margin-right: 100px;
 }
 </style>

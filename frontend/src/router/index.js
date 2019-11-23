@@ -23,6 +23,11 @@ const routes = [
     component: () => import('../views/Categories.vue')
   },
   {
+    path: '/post',
+    name: 'NewPost',
+    component: () => import('../views/NewPost.vue')
+  },
+  {
     path: '/categories/:id',
     name: 'category',
     component: () => import('../views/Category.vue')

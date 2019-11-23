@@ -8,6 +8,7 @@
           </h1>
         </div>
       </div> -->
+
     </section>
     <div class="columns is-multiline">
       <div v-for="(category, idx) in categories" :category="category" :key="idx" :index="category._id" class="column is-one-quarter">
