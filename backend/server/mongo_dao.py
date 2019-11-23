@@ -76,12 +76,23 @@ def verify_user_password(username, password):
     return mongo.db.users.find_one({"_id": username, "password": password})
 
 def get_featured_posts(limit=0):
-    # using a porjection to save bandwidth (espcially removing comments is effective)
+    # projection pipline:
+    # 1. sort to allow (2) limitation
+    # 3. count comments on cropped array
     # return json.loads(json_util.dumps(mongo.db.posts.find({},{'comments': 0})))
-
-    posts = mongo.db.posts.find({},{'comments': 0}).sort("creation_date", -1)
-    if (limit > 0):
-        posts.limit(int(limit))
+    posts = mongo.db.posts.aggregate([
+        { "$sort": {"creation_date": -1}},
+        { "$limit": limit},
+        { "$project": {
+            "uri": "$uri",
+            "author_name": "$author_name",
+            "creation_date": "$creation_date",
+            "category": "$category",
+            "comment_count": { "$cond": { "if": { "$isArray": "$comments" }, "then": { "$size": "$comments" }, "else": "0"} }
+          }
+       },
+       { "$project": {"comment": 0}}
+    ])
     return json.loads(json_util.dumps(posts))
 
 
@@ -121,19 +132,32 @@ def get_user_activity(user_id):
 
 
 def get_posts_by_category(category_id, page=None, items_per_page=None):
-    posts = mongo.db.posts.find({
-        "category": category_id
-        }
-    ).sort("creation_date", -1)
+
+    pipline = [{"$match": {"category": category_id}}, { "$sort": {"creation_date": -1}}]
 
     # supports pagination
+    # pay attention how pipline saves resources
+
     page = 0 if page is None else int(page)
     if page > 0:
         items_per_page = 10 if items_per_page is None else items_per_page
-        posts.skip(int(page)*int(items_per_page))
+        pipline.append({"$skip": int(page)*int(items_per_page)})
     items_per_page = None if items_per_page is None else int(items_per_page)
     if items_per_page is not None:
-        posts.limit(int(items_per_page))
+        pipline.append({"$limit": int(items_per_page)})
+
+    pipline.append({
+            "$project": {
+                "uri": "$uri",
+                "author_name": "$author_name",
+                "creation_date": "$creation_date",
+                "category": "$category",
+                "comment_count": { "$cond": { "if": { "$isArray": "$comments" }, "then": { "$size": "$comments" }, "else": "0"} }
+            }
+         })
+    pipline.append({ "$project": {"comment": 0}})
+    posts = mongo.db.posts.aggregate(pipline)
+
     return json.loads(json_util.dumps(posts))
 
 def count_posts_by_category(category_id=None):
