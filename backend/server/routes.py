@@ -43,6 +43,11 @@ def user_details(user_id):
 def get_posts_per_user(user_id):
     return jsonify(db.get_posts_per_user(user_id))
 
+@api.route("/users/<string:user_id>/comments")
+@token_auth.login_required
+def get_comments_per_user(user_id):
+    return jsonify(db.get_comments_per_user(user_id))
+
 @api.route("/users/<string:user_id>/activity")
 @token_auth.login_required
 def get_user_activity(user_id):

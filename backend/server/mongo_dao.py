@@ -10,8 +10,6 @@ from server import mongo, api  # api only needed for expire settings
 # init database
 
 def reset_database():
-    # clear data
-
     # create collection, set indices
     mongo.db.tokens.drop()
     mongo.db.create_collection("tokens")
@@ -162,7 +160,38 @@ def get_posts_per_user(user_id):
     return json.loads(json_util.dumps(posts))
 
 
+def get_comments_per_user(user_id):
+    # supports pagination
+    # pay attention how pipline saves resources
 
+    # 1. match and sort
+    pipline = [
+        { "$match": {"comments": {"$elemMatch": {"author": user_id}}}},
+        { "$sort": {"creation_date": -1}}]
+
+    # 2. unwind (exploit) comments array
+    # this is heavy on the server, but the price we have to pay for the embeded documents
+    # so it's true what they say, there is no free lunch ;-)
+    pipline.append(
+        { "$unwind": "$comments"},
+    )
+    # 3. filter again for comment authored by userid
+    pipline.append(
+        { "$match": {"comments.author": user_id}},
+    )
+
+    # 4. project
+    pipline.append({
+            "$project": {
+                "creation_date": "$comments.creation_date",
+                "text": "$comments.text",
+            }
+         })
+
+    posts = mongo.db.posts.aggregate(pipline)
+    if posts is None:
+        posts = []
+    return json.loads(json_util.dumps(posts))
 
 def get_posts_by_category(category_id, page=None, items_per_page=None):
     # supports pagination
