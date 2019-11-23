@@ -80,19 +80,25 @@ def get_featured_posts(limit=0):
     # 1. sort to allow (2) limitation
     # 3. count comments on cropped array
     # return json.loads(json_util.dumps(mongo.db.posts.find({},{'comments': 0})))
-    posts = mongo.db.posts.aggregate([
-        { "$sort": {"creation_date": -1}},
-        { "$limit": limit},
-        { "$project": {
-            "uri": "$uri",
-            "author_name": "$author_name",
-            "creation_date": "$creation_date",
-            "category": "$category",
-            "comment_count": { "$cond": { "if": { "$isArray": "$comments" }, "then": { "$size": "$comments" }, "else": "0"} }
-          }
-       },
-       { "$project": {"comment": 0}}
-    ])
+
+    # 1. match and sort
+    pipline = [{ "$sort": {"creation_date": -1}}]
+
+    # 2. limit if possible
+    if limit > 0:
+        pipline.append({ "$limit": limit})
+
+    # 2. count comments and project
+    pipline.append({
+            "$project": {
+                "uri": "$uri",
+                "author_name": "$author_name",
+                "creation_date": "$creation_date",
+                "category": "$category",
+                "comment_count": { "$cond": { "if": { "$isArray": "$comments" }, "then": { "$size": "$comments" }, "else": "0"} }
+            }
+         })
+    posts = mongo.db.posts.aggregate(pipline)
     return json.loads(json_util.dumps(posts))
 
 
@@ -121,6 +127,7 @@ def add_comment(post_id, comment):
 
 
 # queries
+
 def get_user_activity(user_id):
     return json.loads(json_util.dumps(mongo.db.posts.find({
             "$or": [
@@ -129,6 +136,32 @@ def get_user_activity(user_id):
             ]
         }
     ).sort("creation_date", -1)))
+
+def get_posts_per_user(user_id):
+    # supports pagination
+    # pay attention how pipline saves resources
+
+    # 1. match and sort
+    pipline = [{"$match": {"author": user_id}}, { "$sort": {"creation_date": -1}}]
+
+    # 2. count comments and project
+    pipline.append({
+            "$project": {
+                "uri": "$uri",
+                "username": "$author",
+                "author_name": "$author_name",
+                "creation_date": "$creation_date",
+                "category": "$category",
+                "comment_count": { "$cond": { "if": { "$isArray": "$comments" }, "then": { "$size": "$comments" }, "else": "0"} }
+            }
+         })
+
+    posts = mongo.db.posts.aggregate(pipline)
+    if posts is None:
+        posts = []
+    return json.loads(json_util.dumps(posts))
+
+
 
 
 def get_posts_by_category(category_id, page=None, items_per_page=None):
@@ -148,7 +181,7 @@ def get_posts_by_category(category_id, page=None, items_per_page=None):
     if items_per_page is not None:
         pipline.append({"$limit": int(items_per_page)})
 
-    # 3. count comments
+    # 3. count comments and project
     pipline.append({
             "$project": {
                 "uri": "$uri",
@@ -158,8 +191,6 @@ def get_posts_by_category(category_id, page=None, items_per_page=None):
                 "comment_count": { "$cond": { "if": { "$isArray": "$comments" }, "then": { "$size": "$comments" }, "else": "0"} }
             }
          })
-    # 4. remove comments
-    pipline.append({ "$project": {"comment": 0}})
 
     posts = mongo.db.posts.aggregate(pipline)
     return json.loads(json_util.dumps(posts))

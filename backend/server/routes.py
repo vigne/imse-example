@@ -38,8 +38,12 @@ def user_details(user_id):
         db.delete_user(user_id)
         return ("deleted: %s" % user_id, 200)
 
+@api.route("/users/<string:user_id>/posts")
+@token_auth.login_required
+def get_posts_per_user(user_id):
+    return jsonify(db.get_posts_per_user(user_id))
 
-@api.route("/user/<string:user_id>/activity")
+@api.route("/users/<string:user_id>/activity")
 @token_auth.login_required
 def get_user_activity(user_id):
     return jsonify(db.get_user_activity(user_id))
