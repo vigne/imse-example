@@ -28,8 +28,8 @@ class Provider(BaseProvider):
 def init():
     print(request.args)
     number_of_user = request.args.get('users', 10, int)
-    number_of_posts = request.args.get('posts', 10, int)
-    number_of_comments = request.args.get('comments', 10, int)
+    number_of_posts = request.args.get('posts', 100, int)
+    number_of_comments = request.args.get('comments', 100, int)
     db.reset_database()
 
     # fill user
