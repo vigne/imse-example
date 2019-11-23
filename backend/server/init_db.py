@@ -27,9 +27,9 @@ class Provider(BaseProvider):
 @api.route('/init_db', methods=['POST'])
 def init():
     print(request.args)
-    number_of_user = int(request.args.get('users')) or 10
-    number_of_posts = int(request.args.get('posts')) or 10
-    number_of_comments = int(request.args.get('comments')) or 10
+    number_of_user = request.args.get('users', 10, int)
+    number_of_posts = request.args.get('posts', 100, int)
+    number_of_comments = request.args.get('comments', 1000, int)
     db.reset_database()
 
     # fill user
