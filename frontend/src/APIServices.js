@@ -15,10 +15,31 @@ export class APIService{
 
   constructor(){
   }
+  init() {
+      console.log("init db")
+      const url = `/init_db`;
+      return axios.post(url).then(response => response.data)
+  }
   getFeaturedPosts() {
       console.log("get featured")
       const url = `/posts`;
       return axios.get(url, options).then(response => response.data)
+  }
+  getCategories() {
+      console.log("get categories")
+      const url = `/categories`
+      return axios.get(url, options).then(response => response.data)
+  }
+  getPostByCategory(categoryId) {
+    console.log("get post by category")
+    const url = `/category/${categoryId}`;
+    return axios.get(url)
+      .then(response => response.data)
+      .catch((error) => {
+        console.log("Error requesting post from backend", error)
+        if (error.response && error.response.status === 401)
+          window.location.href = "/login"
+      })
   }
 
   getPostById(postId) {
@@ -54,7 +75,7 @@ export class APIService{
           window.location.href = "/login"
       })
   }
-  getUserProstsByUser(userId) {
+  getUserPostsByUser(userId) {
     console.log("get post by user")
     const url = `/users/${userId}/posts`;
     return axios.get(url)

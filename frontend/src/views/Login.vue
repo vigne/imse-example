@@ -1,5 +1,9 @@
 <template>
     <div id="login">
+      <div class="info">
+        The defualt user is: <strong>ralph</strong> and it's password is <strong>pwd</strong>
+        If the DB isn't initialized yet, click <a v-on:click="init()">here</a>
+      </div>
         <input type="text" name="username" v-model="input.username" placeholder="Username" />
         <br/>
         <input type="password" name="password" v-model="input.password" placeholder="Password" />
@@ -27,6 +31,9 @@
     methods: {
       login() {
         apiService.getToken(this.input.username, this.input.password)
+      },
+      init() {
+        apiService.init()
       }
     }
   }

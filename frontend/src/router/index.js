@@ -8,14 +8,24 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/Login.vue')
+  },
+  {
     path: '/',
     name: 'home',
     component: Home
   },
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('../views/Login.vue')
+    path: '/categories',
+    name: 'categories',
+    component: () => import('../views/Categories.vue')
+  },
+  {
+    path: '/categories/:id',
+    name: 'category',
+    component: () => import('../views/Category.vue')
   },
   {
     path: '/profile/:id',

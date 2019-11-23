@@ -1,30 +1,30 @@
 <template>
 <nav class="navbar container" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="/">
-      <strong class="is-size-4">Something like Reddit</strong>
-    </a>
-  </div>
   <div id="navbar" class="navbar-menu">
     <div class="navbar-start">
-    <div v-if="getUser()" class="buttons">
-        <router-link to="/" class="navbar-item">Home</router-link>
-        <router-link to="/Categories" class="navbar-item">Categories</router-link>
-        <router-link :to="'/Profile/' + this.username" class="navbar-item">Profile</router-link>
+      <div v-if="getUser()">
+        <a class="button is-dark">
+          <router-link :to="'/'">
+            <strong>Home</strong>
+          </router-link>
+        </a>
+        <a class="button is-dark">
+          <router-link to="/categories">
+            <strong>Categories</strong>
+          </router-link>
+        </a>
+        <a class="button is-dark">
+          <router-link :to="'/profile/' + this.username" >
+            Profile
+          </router-link>
+        </a>
       </div>
-    </div>
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div v-if="getUser()" class="buttons">
-          Logged in as:&nbsp;<span class="username"> {{getUser()}}</span>
-        </div>
-        <div v-else class="buttons">
-          <a class="button is-dark">
-            <router-link :to="'/login'">
-              <strong>Sign In</strong>
-            </router-link>
-          </a>
-        </div>
+      <div v-else>
+        <a class="button is-dark">
+          <router-link :to="'/login'">
+            <strong>Sign In</strong>
+          </router-link>
+        </a>
       </div>
     </div>
   </div>
@@ -41,8 +41,11 @@ export default {
   methods: {
     getUser() {
       let username = localStorage.username
-      if (username == 'undefined')
+      console.log(username)
+      if (username == undefined){
+        console.log("not logged in")
         return false
+      }
       this.username = username
       return username
     }
@@ -64,5 +67,8 @@ nav {
 .username {
   font-weight: bold;
   color: #cc0000;
+}
+.button {
+  margin-right: 20px;
 }
 </style>

@@ -5,7 +5,8 @@
         <h2 class="is-size-4 has-text-weight-bold">{{post.uri}}</h2>
         <small class="post-date">{{post.creation_date | formatDate}}</small>
         <small class="post-author">{{post.author_name}}</small>
-        <span>Comments (N)</span>
+        <small class="post-category">{{post.category}}</small>
+        <small class="post-comments">Comments: {{post.comment_count}}</small>
       </div>
     </div>
   </div>
@@ -70,5 +71,23 @@
     position: absolute;
     top: 0;
     left: 0;
+  }
+  .post-category {
+    background-color: #151515;
+    color: #FFF;
+    font-size: .75em;
+    padding: 2px 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  .post-comments {
+    background-color: #151515;
+    color: #FFF;
+    font-size: .75em;
+    padding: 2px 10px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 </style>
