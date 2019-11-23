@@ -86,7 +86,7 @@ def add_comment(post_id):
 
 
 # get posts by category
-@api.route("/category")
+@api.route("/categories")
 @token_auth.login_required
 def count_posts_by_category():
     return jsonify(db.count_posts_by_category())
