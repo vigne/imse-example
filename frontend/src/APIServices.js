@@ -43,6 +43,28 @@ export class APIService{
           window.location.href = "/login"
       })
   }
+  getUserProfile(userId) {
+    console.log("get post by id")
+    const url = `/users/${userId}`;
+    return axios.get(url)
+      .then(response => response.data)
+      .catch((error) => {
+        console.log("Error requesting post from backend", error)
+        if (error.response && error.response.status === 401)
+          window.location.href = "/login"
+      })
+  }
+  getUserProstsByUser(userId) {
+    console.log("get post by user")
+    const url = `/users/${userId}/posts`;
+    return axios.get(url)
+      .then(response => response.data)
+      .catch((error) => {
+        console.log("Error requesting post from backend", error)
+        if (error.response && error.response.status === 401)
+          window.location.href = "/login"
+      })
+  }
   getToken(username, password) {
     const url = `/tokens`;
     return axios.post(url, options, {

@@ -61,7 +61,7 @@
       postComment() {
         console.log(this.comment)
         apiService.add_comment(this.$route.params.id, this.comment)
-          .then(() => location.reload())
+          .then(() => this.getPostById())
           .catch((err) => {console.log("SingleView", err)})
       }
     },

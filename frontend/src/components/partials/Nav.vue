@@ -7,8 +7,11 @@
   </div>
   <div id="navbar" class="navbar-menu">
     <div class="navbar-start">
-      <router-link to="/" class="navbar-item">Home</router-link>
-      <router-link to="/Profile" class="navbar-item">Profile</router-link>
+    <div v-if="getUser()" class="buttons">
+        <router-link to="/" class="navbar-item">Home</router-link>
+        <router-link to="/Categories" class="navbar-item">Categories</router-link>
+        <router-link :to="'/Profile/' + this.username" class="navbar-item">Profile</router-link>
+      </div>
     </div>
     <div class="navbar-end">
       <div class="navbar-item">
@@ -30,14 +33,21 @@
 <script>
 export default {
   name: 'Nav',
+  data() {
+    return {
+      username: ""
+    }
+  },
   methods: {
     getUser() {
       let username = localStorage.username
       if (username == 'undefined')
         return false
+      this.username = username
       return username
     }
-  },}
+  },
+}
 </script>
 <style lang="scss" scoped>
 nav {
