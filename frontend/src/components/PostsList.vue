@@ -4,7 +4,7 @@
     Check out the latest posts
     </h2>
     <div class="columns is-multiline">
-      <div v-for="(post, idx) in posts" :post="post" :key="idx" :index="post._id" class="column is-one-quarter">
+      <div v-for="(post, idx) in posts" :post="post" :key="idx" :index="post._id" class="column is-full">
         <router-link :to="'/posts/' + post._id">
           <PostCard :post="post" />
         </router-link>

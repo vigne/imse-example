@@ -4,11 +4,6 @@
     <a class="navbar-item" href="/">
       <strong class="is-size-4">Something like Reddit</strong>
     </a>
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
   </div>
   <div id="navbar" class="navbar-menu">
     <div class="navbar-start">
@@ -17,9 +12,14 @@
     </div>
     <div class="navbar-end">
       <div class="navbar-item">
-        <div class="buttons">
+        <div v-if="getUser()" class="buttons">
+          Logged in as:&nbsp;<span class="username"> {{getUser()}}</span>
+        </div>
+        <div v-else class="buttons">
           <a class="button is-dark">
-            <strong>Sign In</strong>
+            <router-link :to="'/login'">
+              <strong>Sign In</strong>
+            </router-link>
           </a>
         </div>
       </div>
@@ -29,8 +29,15 @@
 </template>
 <script>
 export default {
-  name: 'Nav'
-}
+  name: 'Nav',
+  methods: {
+    getUser() {
+      let username = localStorage.username
+      if (username == 'undefined')
+        return false
+      return username
+    }
+  },}
 </script>
 <style lang="scss" scoped>
 nav {
@@ -43,5 +50,9 @@ nav {
             color: #d88d00;
         }
     }
+}
+.username {
+  font-weight: bold;
+  color: #cc0000;
 }
 </style>

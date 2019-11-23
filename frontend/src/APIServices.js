@@ -1,7 +1,6 @@
 import axios from 'axios'
 import {EJSON} from 'bson'
 
-
 axios.defaults.baseURL = 'http://localhost:5000'
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`
 
@@ -33,6 +32,17 @@ export class APIService{
           window.location.href = "/login"
       })
   }
+  add_comment(postId, comment) {
+    console.log("add comment")
+    const url = `/posts/${postId}`;
+    return axios.post(url, { "text": comment})
+      .then(response => response.data)
+      .catch((error) => {
+        console.log("Error requesting post from backend", error)
+        if (error.response && error.response.status === 401)
+          window.location.href = "/login"
+      })
+  }
   getToken(username, password) {
     const url = `/tokens`;
     return axios.post(url, options, {
@@ -42,7 +52,7 @@ export class APIService{
       }})
       .then(response => {
         localStorage.token = response.data._id
-        localStorage.user = response.data.user
+        localStorage.username = response.data.user
         window.location.href = "/"
       })
       .catch((error) => {

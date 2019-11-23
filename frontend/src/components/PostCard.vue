@@ -36,7 +36,7 @@
     padding-top: 5px;
     position: absolute;
     color: #FFF;
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: #00d1b2;
     top: 0;
     padding: 10px;
     height: 100px;

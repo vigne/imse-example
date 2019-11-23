@@ -1,16 +1,19 @@
 <template>
   <div id="app">
     <Nav />
+    <Header />
     <router-view/>
   </div>
 </template>
 
 <script>
 import Nav from './components/partials/Nav.vue';
+import Header from './components/partials/Header.vue';
 export default {
   name: 'app',
   components: {
-    Nav
+    Nav,
+    Header
   }
 }
 </script>
