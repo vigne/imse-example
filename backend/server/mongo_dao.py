@@ -132,12 +132,14 @@ def get_user_activity(user_id):
 
 
 def get_posts_by_category(category_id, page=None, items_per_page=None):
-
-    pipline = [{"$match": {"category": category_id}}, { "$sort": {"creation_date": -1}}]
-
     # supports pagination
     # pay attention how pipline saves resources
 
+    # 1. match and sort
+    pipline = [{"$match": {"category": category_id}}, { "$sort": {"creation_date": -1}}]
+
+
+    # 2. reduce elements (pagination)
     page = 0 if page is None else int(page)
     if page > 0:
         items_per_page = 10 if items_per_page is None else items_per_page
@@ -146,6 +148,7 @@ def get_posts_by_category(category_id, page=None, items_per_page=None):
     if items_per_page is not None:
         pipline.append({"$limit": int(items_per_page)})
 
+    # 3. count comments
     pipline.append({
             "$project": {
                 "uri": "$uri",
@@ -155,9 +158,10 @@ def get_posts_by_category(category_id, page=None, items_per_page=None):
                 "comment_count": { "$cond": { "if": { "$isArray": "$comments" }, "then": { "$size": "$comments" }, "else": "0"} }
             }
          })
+    # 4. remove comments
     pipline.append({ "$project": {"comment": 0}})
-    posts = mongo.db.posts.aggregate(pipline)
 
+    posts = mongo.db.posts.aggregate(pipline)
     return json.loads(json_util.dumps(posts))
 
 def count_posts_by_category(category_id=None):
