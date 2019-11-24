@@ -12,9 +12,3 @@ CORS(api)
 # mongo connection
 from flask_pymongo import PyMongo
 mongo = PyMongo(api)
-
-
-
-
-
-from server import routes # bottom import is a workaround to circular imports
