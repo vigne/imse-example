@@ -17,7 +17,6 @@
         <a class="button is-dark submit" v-on:click="postComment()" type="submit">
           <strong>Comment</strong>
         </a>
-
     </section>
     <section class="post-comments">
       <div class="container comment">
@@ -70,8 +69,18 @@
       },
       postComment() {
         console.log(this.comment)
-        apiService.add_comment(this.$route.params.id, this.comment)
-          .then(() => this.getPostById())
+        console.log(this.$route.params.id)
+        var postId = this.$route.params.id
+        apiService.addComment(this.$route.params.id, this.comment)
+          .then(() => {
+            apiService.getPostById(postId)
+              .then((data) => {
+                if(data != undefined)
+                  this.post = data
+              })
+              .catch((err) => {console.log("SingleView", err)})
+            return {}
+          })
           .catch((err) => {console.log("SingleView", err)})
       }
     },
