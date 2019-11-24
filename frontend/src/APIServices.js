@@ -2,7 +2,9 @@ import axios from 'axios'
 import {EJSON} from 'bson'
 import router from './router'
 
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = '/api' // to be used in productin mode
+
+// axios.defaults.baseURL = 'http://localhost:5000/'  // to be used in development mode
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`
 
 const options = {
@@ -60,7 +62,7 @@ export class APIService{
     console.log("add comment")
     const url = `/posts`;
     return axios.post(url, { "uri": link, "category": category }, options)
-      .then(() => {window.location.href = "/categories/" + category})
+      .then(() => {router.push("/categories/" + category)})
       .catch((error) => {
         if (error.response && error.response.status === 401)
           router.push('/login')
