@@ -2,40 +2,40 @@
 version: "3.2"
 
 services:
-  frontend:
+  frontend-dev:
     build:
       context: ./frontend
-    image: imse/0303628_frontend
-    environment:
-      API_SERVER: 'http://backend:5000'
-    # volumes:
-    #   - type: bind
-    #     source: ./data/mongo
-    #     target: /data/db
+      dockerfile: Dockerfile.development
+    image: imse/0303628_frontend_dev
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /app
     ports:
-      - target: 80
+      - target: 8080
         published: 8080
         protocol: tcp
     depends_on:
-      - backend
+      - backend-dev
     networks:
       imsenet:
 
-  backend:
+  backend-dev:
     build:
       # set context for build command explicitly
       context: ./backend
-    # ports:
-    #   - target: 5000
-    #     published: 5000
-    #     protocol: tcp
+    ports:
+      - target: 5000
+        published: 5000
+        protocol: tcp
     image: imse/0303628_backend
     environment:
       MONGO_URI: 'mongodb://admin:imse@mongo:27017/slr?authSource=admin'
-    # volumes:
-    #   - type: bind
-    #     source: ./data/mongo
-    #     target: /data/db
+      FLASK_DEBUG: 1
+    volumes:
+      - type: bind
+        source: ./backend/server
+        target: /backend/server
     depends_on:
       - mongo
     networks:
@@ -50,10 +50,10 @@ services:
     #   - type: bind
     #     source: ./data/mongo
     #     target: /data/db
-    # ports:
-    #   - target: 27017
-    #     published: 27017
-    #     protocol: tcp
+    ports:
+      - target: 27017
+        published: 27017
+        protocol: tcp
     networks:
       imsenet:
 
