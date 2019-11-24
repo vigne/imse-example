@@ -39,6 +39,5 @@ services:
 
 networks:
   imsenet:
-    attachable: true
 volumes:
   mongo:

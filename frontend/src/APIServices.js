@@ -4,7 +4,8 @@ import router from './router'
 
 // axios.defaults.baseURL = '/api' // to be used in productin mode
 
-axios.defaults.baseURL = 'http://localhost:5005/'  // to be used in development mode
+console.log(process.env.VUE_APP_BACKEND_BASEURI)
+axios.defaults.baseURL = process.env.VUE_APP_BACKEND_BASEURI  // to be used in development mode
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`
 
 const options = {
