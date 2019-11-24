@@ -1,4 +1,4 @@
-FLASK_APP=server.py
+FLASK_APP=app.py
 
 # auto restarts the app on file change
-FLASK_DEBUG=0
+FLASK_DEBUG=1

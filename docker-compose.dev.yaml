@@ -25,17 +25,18 @@ services:
       # set context for build command explicitly
       context: ./backend
     ports:
-      - target: 5000
-        published: 5000
+      - target: 5005
+        published: 5005
         protocol: tcp
     image: imse/0303628_backend
     environment:
       MONGO_URI: 'mongodb://admin:imse@mongo:27017/slr?authSource=admin'
       FLASK_DEBUG: 1
+      FLASK_APP: ./app.py
     volumes:
       - type: bind
-        source: ./backend/server
-        target: /backend/server
+        source: ./backend
+        target: /backend
     depends_on:
       - mongo
     networks:

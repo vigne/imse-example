@@ -6,18 +6,20 @@ FROM python:alpine
 ADD requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-ADD ./* /backend/
-ADD ./server /backend/server
+COPY . /backend/
 
-EXPOSE 5000
+EXPOSE 5005
 
 # auto-restart on file changes
-
 ENV FLASK_DEBUG=0
-ENV PYTHONPATH=/backend
+ENV PYTHONPATH=/backend/server
 
 ENV MONGO_URI="mongodb://admin:imse@localhost:27017/slr?authSource=admin"
 
 WORKDIR /backend
 
+RUN ls server -al
+RUN ls -al
+
 ENTRYPOINT ["python", "app.py"]
+# ENTRYPOINT ["ls", "-l"]

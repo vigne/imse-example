@@ -2,9 +2,9 @@ import axios from 'axios'
 import {EJSON} from 'bson'
 import router from './router'
 
-axios.defaults.baseURL = '/api' // to be used in productin mode
+// axios.defaults.baseURL = '/api' // to be used in productin mode
 
-// axios.defaults.baseURL = 'http://localhost:5000/'  // to be used in development mode
+axios.defaults.baseURL = 'http://localhost:5005/'  // to be used in development mode
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`
 
 const options = {

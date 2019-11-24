@@ -15,12 +15,12 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/init_db?users=10&posts=100&comments=1000",
+					"raw": "http://localhost:5005/init_db?users=10&posts=100&comments=1000",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"init_db"
 					],
@@ -102,12 +102,12 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/tokens",
+					"raw": "http://localhost:5005/tokens",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"tokens"
 					]
@@ -127,12 +127,12 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/users",
+					"raw": "http://localhost:5005/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"users"
 					]
@@ -152,15 +152,69 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/users/ralph",
+					"raw": "http://localhost:5005/users/ralph",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"users",
 						"ralph"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get posts per user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer IzhIFghiXz2+ApBRNkSF1kR7OVYrJtfJ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5005/users/ralph/posts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"users",
+						"ralph",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get comments per user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer IzhIFghiXz2+ApBRNkSF1kR7OVYrJtfJ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5005/users/ralph/comments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"users",
+						"ralph",
+						"comments"
 					]
 				}
 			},
@@ -172,12 +226,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/users/eschikuta",
+					"raw": "http://localhost:5005/users/eschikuta",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"users",
 						"eschikuta"
@@ -198,20 +252,14 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/posts?limit=3",
+					"raw": "http://localhost:5005/posts",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"posts"
-					],
-					"query": [
-						{
-							"key": "limit",
-							"value": "3"
-						}
 					]
 				}
 			},
@@ -223,12 +271,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/category/news?page=0&items_per_page=10",
+					"raw": "http://localhost:5005/category/news?page=0&items_per_page=10",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"category",
 						"news"
@@ -274,12 +322,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/posts",
+					"raw": "http://localhost:5005/posts",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"posts"
 					]
@@ -317,15 +365,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/posts/5dd6f35e64af1154173b800f",
+					"raw": "http://localhost:5005/posts/5dd95ca5abfe6227d2ca2c19",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"posts",
-						"5dd6f35e64af1154173b800f"
+						"5dd95ca5abfe6227d2ca2c19"
 					]
 				}
 			},
@@ -358,12 +406,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/posts/5dd6f73f69f72091156e1151",
+					"raw": "http://localhost:5005/posts/5dd6f73f69f72091156e1151",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"posts",
 						"5dd6f73f69f72091156e1151"
@@ -378,12 +426,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/user/ralph/activity",
+					"raw": "http://localhost:5005/user/ralph/activity",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"user",
 						"ralph",
@@ -399,12 +447,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/category",
+					"raw": "http://localhost:5005/category",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5000",
+					"port": "5005",
 					"path": [
 						"category"
 					]
