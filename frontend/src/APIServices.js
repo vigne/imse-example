@@ -1,7 +1,8 @@
 import axios from 'axios'
 import {EJSON} from 'bson'
+import router from './router'
 
-axios.defaults.baseURL = 'http://localhost:5000'
+axios.defaults.baseURL = '/api'
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`
 
 const options = {
@@ -36,21 +37,23 @@ export class APIService{
     return axios.get(url, options)
       .then(response => response.data)
       .catch((error) => {
-        console.log("Error requesting post from backend", error)
         if (error.response && error.response.status === 401)
-          window.location.href = "/login"
+          router.push('/login')
+        console.log("Error requesting post from backend", error)
       })
   }
 
   getPostById(postId) {
     console.log("get post by id", postId)
+    if(postId === undefined)
+      return
     const url = `/posts/${postId}`;
     return axios.get(url, options)
       .then(response => response.data)
-      .catch((error) => {
-        if (error.response && error.response.status === 401)
-        console.log("Error requesting post from backend", error)
-          window.location.href = "/login"
+      .catch(() => {
+        // if (error.response && error.response.status === 401)
+          router.push('/login')
+        // console.log("Error requesting post from backend", error)
       })
   }
   postLink(category, link) {
@@ -59,20 +62,19 @@ export class APIService{
     return axios.post(url, { "uri": link, "category": category }, options)
       .then(() => {window.location.href = "/categories/" + category})
       .catch((error) => {
-        console.log("Error requesting post from backend", error)
         if (error.response && error.response.status === 401)
-          window.location.href = "/login"
+          router.push('/login')
+        console.log("Error requesting post from backend", error)
       })
   }
-  add_comment(postId, comment) {
+  addComment(postId, comment) {
     console.log("add comment")
     const url = `/posts/${postId}`;
     return axios.post(url, { "text": comment}, options)
       .then(response => response.data)
       .catch((error) => {
-        console.log("Error requesting post from backend", error)
         if (error.response && error.response.status === 401)
-          window.location.href = "/login"
+          router.push('/login')
       })
   }
   getUserProfile(userId) {
@@ -81,9 +83,9 @@ export class APIService{
     return axios.get(url, options)
       .then(response => response.data)
       .catch((error) => {
-        console.log("Error requesting post from backend", error)
         if (error.response && error.response.status === 401)
-          window.location.href = "/login"
+          router.push('/login')
+        console.log("Error requesting post from backend", error)
       })
   }
   getPostsByUser(userId) {
@@ -92,9 +94,9 @@ export class APIService{
     return axios.get(url, options)
       .then(response => this.posts = response.data)
       .catch((error) => {
-        console.log("Error requesting post from backend", error)
         if (error.response && error.response.status === 401)
-          window.location.href = "/login"
+          router.push('/login')
+        console.log("Error requesting post from backend", error)
       })
   }
   getCommentsByUser(userId) {
@@ -103,9 +105,9 @@ export class APIService{
     return axios.get(url, options)
       .then(response => this.comments = response.data)
       .catch((error) => {
-        console.log("Error requesting post from backend", error)
         if (error.response && error.response.status === 401)
-          window.location.href = "/login"
+          router.push('/login')
+        console.log("Error requesting post from backend", error)
       })
   }
   getToken(username, password) {
@@ -118,7 +120,7 @@ export class APIService{
       .then(response => {
         localStorage.token = response.data._id
         localStorage.username = response.data.user
-        window.location.href = "/"
+        window.location.href = '/'
       })
       .catch((error) => {
         console.log("Error requesting token", error)

@@ -17,6 +17,7 @@
 <script>
   import {APIService} from '../APIServices';
   const apiService = new APIService();
+  
 
   export default {
     name: 'Login',
