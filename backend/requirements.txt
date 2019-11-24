@@ -1,10 +1,9 @@
 Flask
-
-# mysql-connector
 flask_pymongo
 flask-httpauth
 flask-cors
 
 requests
+python-dotenv
 Faker
 PyJWT
