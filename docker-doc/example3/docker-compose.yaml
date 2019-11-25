@@ -1,0 +1,24 @@
+version: "3.2"
+
+services:
+  imse_app:
+    deploy:
+      replicas: 2
+    image: imse-example
+    ports:
+      - target: 8081
+        published: 8081
+        protocol: tcp
+    environment:
+      - "MODE=Prod"
+      - "NAME=Happy Customer"
+    networks:
+      example:
+
+  redis:
+    image: redis
+    networks:
+      example:
+
+networks:
+  example:

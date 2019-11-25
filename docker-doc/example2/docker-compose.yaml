@@ -1,0 +1,22 @@
+version: "3.2"
+
+services:
+  imse_app:
+    image: imse-example
+    ports:
+      - target: 8081
+        published: 8081
+        protocol: tcp
+    environment:
+      - "MODE=Devel"
+      - "NAME=Happy Developer"
+    networks:
+      example:
+
+  redis:
+    image: redis
+    networks:
+      example:
+
+networks:
+  example:
