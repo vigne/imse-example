@@ -18,8 +18,4 @@ ENV MONGO_URI="mongodb://admin:imse@localhost:27017/slr?authSource=admin"
 
 WORKDIR /backend
 
-RUN ls server -al
-RUN ls -al
-
 ENTRYPOINT ["python", "app.py"]
-# ENTRYPOINT ["ls", "-l"]
