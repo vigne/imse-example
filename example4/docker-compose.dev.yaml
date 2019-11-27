@@ -9,8 +9,8 @@ services:
     image: imse/0303628_frontend_dev
     volumes:
       - type: bind
-        source: ./frontend
-        target: /app
+        source: ./frontend/src
+        target: /app/src
     ports:
       - target: 8080
         published: 8080
